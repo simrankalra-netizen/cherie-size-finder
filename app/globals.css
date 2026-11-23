@@ -1,12 +1,44 @@
-/* Cherié brand colours: change them here and they change everywhere. */
+/* Cherié brand colours: change them here and they change everywhere.
+   The cherry, lettering cream and gold come straight from the Cherié logo. */
 :root {
-  --cream: #efeae3; /* page background */
-  --cherry: #5e0b15; /* headings and buttons */
+  --cherry: #630805; /* logo: main cherry, the colour of the whole site */
+  --cherry-glow: #7a0d0a; /* logo: the brighter glow in the centre */
+  --cherry-deep: #460501; /* logo: the deep corners */
+  --logo-cream: #eedcc8; /* logo: the lettering */
+  --gold: #caa392; /* logo: the thin frame line */
+  --cream: #efeae3; /* light fields inside cards */
   --paper: #f7f2ec; /* cards */
-  --beige: #e6d5bd; /* thin frames */
-  --rose: #b5525f; /* accent */
-  --ink: #3a2a2c; /* body text */
+  --beige: #e6d5bd; /* thin frames inside cards */
+  --rose: #b5525f; /* accent inside cards */
+  --ink: #3a2a2c; /* text inside cards */
   --ink-soft: #6f5f60;
+  --cream-soft: #e6d4c6; /* soft text on cherry */
+  --line: rgba(202, 163, 146, 0.28); /* gold hairlines on cherry */
+
+  /* What text uses. The site is cherry, so by default text is cream and
+     labels are gold, like the logo. Cards switch these back to dark text. */
+  --heading: var(--logo-cream);
+  --text: var(--paper);
+  --text-soft: var(--cream-soft);
+  --label: var(--gold);
+}
+
+/* Cards stay light so forms and the size chart are easy to read. */
+.card {
+  color: var(--text);
+  --heading: var(--cherry);
+  --text: var(--ink);
+  --text-soft: var(--ink-soft);
+  --label: var(--rose);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.card a:focus-visible {
+  outline-color: var(--rose);
 }
 
 * {
@@ -19,8 +51,8 @@ body {
 }
 
 body {
-  background: var(--cream);
-  color: var(--ink);
+  background: var(--cherry);
+  color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
   font-weight: 400;
   font-size: 17px;
@@ -32,7 +64,7 @@ h1,
 h2 {
   font-family: var(--font-heading), Georgia, serif;
   font-weight: 600;
-  color: var(--cherry);
+  color: var(--heading);
   line-height: 1.1;
   margin: 0;
 }
@@ -47,7 +79,7 @@ h1 {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--rose);
+  color: var(--label);
   margin: 0 0 10px;
   display: block;
 }
@@ -62,16 +94,16 @@ h1 {
 }
 
 .intro {
-  color: var(--ink-soft);
+  color: var(--text-soft);
   margin: 14px 0 0;
 }
 
 .privacy {
   font-size: 14px;
-  color: var(--ink-soft);
+  color: var(--text-soft);
   margin: 0;
   padding-left: 12px;
-  border-left: 2px solid var(--rose);
+  border-left: 2px solid var(--label);
 }
 
 .card {
@@ -166,8 +198,8 @@ button:focus-visible {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 14px;
-  color: var(--paper);
-  background: var(--cherry);
+  color: var(--cherry);
+  background: var(--logo-cream); /* on cherry: cream button, like the logo lettering */
   border: 0;
   border-radius: 4px;
   padding: 16px 24px;
@@ -177,6 +209,12 @@ button:focus-visible {
 
 .primary:hover {
   opacity: 0.9;
+}
+
+/* Inside a light card, the button is cherry with cream text. */
+.card .primary {
+  color: var(--paper);
+  background: var(--cherry);
 }
 
 .message p {
@@ -223,7 +261,7 @@ button:focus-visible {
 
 .small {
   font-size: 13px;
-  color: var(--ink-soft);
+  color: var(--text-soft);
 }
 
 .note {
@@ -275,7 +313,415 @@ button:focus-visible {
   }
 }
 
+/* ---------- Site: header, footer and home page ---------- */
+
+a {
+  color: inherit;
+}
+
+h2 {
+  font-size: clamp(32px, 5vw, 44px);
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 600;
+  color: var(--heading);
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.wrap.narrow {
+  max-width: 720px;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--cherry-deep);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 68px;
+}
+
+.wordmark {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 600;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--heading);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+  transition: color 200ms ease;
+}
+
+.nav-link:hover {
+  color: var(--label);
+}
+
+a.primary,
+a.secondary {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.primary.btn-small {
+  padding: 14px 18px;
+  font-size: 12px;
+}
+
+.secondary {
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--logo-cream);
+  border: 1px solid var(--logo-cream);
+  border-radius: 4px;
+  padding: 15px 24px;
+  transition: background 200ms ease;
+}
+
+.secondary:hover {
+  background: rgba(238, 220, 200, 0.1);
+}
+
+.section {
+  padding: 88px 0;
+}
+
+/* A gold hairline between sections, like the logo's frame. */
+.section + .section {
+  border-top: 1px solid var(--line);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+
+.hero h1 {
+  font-size: clamp(44px, 6.5vw, 72px);
+}
+
+.lead {
+  font-size: 19px;
+  color: var(--text-soft);
+  margin: 20px 0 32px;
+  max-width: 34em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.hero-art {
+  padding: 24px;
+  text-align: center;
+}
+
+.sketch {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.art-note {
+  margin: 8px 0 0;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.price {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--heading);
+  margin: 0;
+}
+
+.tagline {
+  color: var(--label);
+  font-weight: 500;
+  margin: 4px 0 16px;
+}
+
+.size-pills {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.size-pill {
+  min-width: 48px;
+  text-align: center;
+  padding: 8px 12px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--logo-cream);
+  font-weight: 500;
+}
+
+.chart {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.chart th,
+.chart td {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--beige);
+}
+
+.chart th {
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.chart-size {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--cherry);
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 32px 0 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.steps p,
+.promise p {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--rose);
+  color: var(--rose);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.promises {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 36px 48px;
+  margin-top: 32px;
+}
+
+.promise {
+  padding-left: 18px;
+  border-left: 2px solid var(--label);
+}
+
+/* Framed with a thin gold line and a soft centre glow, like the logo. */
+.drop {
+  text-align: center;
+  padding: 64px 24px;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  background: radial-gradient(ellipse at center, var(--cherry-glow) 0%, var(--cherry) 70%);
+}
+
+.drop p {
+  max-width: 36em;
+  margin: 0 auto 28px;
+  color: var(--text-soft);
+}
+
+.faq {
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.faq details {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq summary {
+  padding: 18px 0;
+  cursor: pointer;
+  font-weight: 500;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: "+";
+  color: var(--label);
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 200ms ease;
+}
+
+.faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq details p {
+  margin: 0 0 18px;
+  color: var(--text-soft);
+}
+
+.site-footer {
+  padding: 56px 0 28px;
+  background: var(--cherry-deep);
+  border-top: 1px solid var(--line);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.footer-line {
+  color: var(--text-soft);
+  margin: 8px 0 0;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+
+.footer-nav a {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.footer-nav a:hover {
+  color: var(--label);
+}
+
+.footer-small {
+  margin-top: 32px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* The hero glows like the logo: brighter in the middle, deeper at the edges. */
+.hero-band {
+  background: radial-gradient(ellipse at 40% 45%, var(--cherry-glow) 0%, var(--cherry) 55%, var(--cherry-deep) 100%);
+  border-bottom: 1px solid var(--line);
+}
+
+.delay-1 {
+  animation-delay: 120ms;
+}
+
+.delay-2 {
+  animation-delay: 240ms;
+}
+
+.delay-3 {
+  animation-delay: 360ms;
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .hero {
+    padding-top: 48px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  .promises {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .section {
+    padding: 64px 0;
+  }
+  .nav-link {
+    display: none;
+  }
+}
+
 @media (max-width: 420px) {
+  .actions a {
+    flex: 1 1 100%;
+  }
   .measurements {
     grid-template-columns: 1fr;
   }

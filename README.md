@@ -1,6 +1,8 @@
 # Cherié Size Finder
 
-A one-screen web app that recommends a size (S, M, L or XL) for the **Cherié soft wire-free bralette (₹1,499)** from two measurements and two fit questions, explained in Cherié's warm, calm voice.
+A small Cherié brand website (`/`) with a size finder (`/size-finder`) that recommends a size (S, M, L or XL) for the **Cherié soft wire-free bralette (₹1,499)** from two measurements and two fit questions, explained in Cherié's warm, calm voice.
+
+The home page introduces the bralette, shows the size chart (read from the same file the size finder uses), explains the three sizing steps, Cherié's promise and an FAQ. It makes no fabric, skin or sustainability claims and shows no ratings or reviews until there are real ones.
 
 Built as a hackathon MVP with Next.js, plain TypeScript for the sizing, and Google Gemini for the short written fit note.
 
@@ -173,9 +175,11 @@ Edit the numbers in [`data/size-chart.ts`](data/size-chart.ts), following the in
 app/
   api/fit-note/route.ts   The only AI call (Gemini), with retries and checks
   globals.css             Brand colours, fonts, fade-ins
-  layout.tsx              Loads Cormorant Garamond and Jost
-  page.tsx                The one main screen
+  layout.tsx              Fonts, plus the site header and footer on every page
+  page.tsx                The home page
+  size-finder/page.tsx    The size finder page
 components/SizeFinder.tsx The form and the result card
+components/BraletteSketch.tsx  Line-drawing illustration (not a product photo)
 data/size-chart.ts        ⚠️ The size chart: replace the placeholder numbers
 lib/sizing.ts             Plain-code input checks and size rule
 lib/copy-guard.ts         Banned phrases, note checks, the standard tip
