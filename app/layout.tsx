@@ -17,7 +17,7 @@ const script = Sacramento({ subsets: ["latin"], weight: "400", variable: "--font
 
 export const metadata: Metadata = {
   title: { default: "Cherié · The soft wire-free bralette", template: "%s · Cherié" },
-  description: "Cherié makes soft, wire-free lingerie for warm days, sized with care. Find your size in a minute.",
+  description: "Cherié makes soft, wire-free lingerie, sized with care. Find your size in a minute.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/" className="wordmark">
                   Cherié
                 </Link>
-                <p className="footer-line">Soft, wire-free lingerie for warm days, sized with care.</p>
+                <p className="footer-line">Soft, wire-free lingerie, sized with care.</p>
               </div>
             </div>
             <nav className="footer-nav" aria-label="Footer">

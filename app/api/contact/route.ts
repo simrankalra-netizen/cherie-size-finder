@@ -116,30 +116,61 @@ export async function POST(request: Request): Promise<Response> {
   return reply({ ok: true }, 200);
 }
 
+type Email = { to: string; replyTo?: string; subject: string; html: string; text: string };
+
+// Two ways to send, chosen by which keys are set:
+//  - Gmail with an app password (GMAIL_USER + GMAIL_APP_PASSWORD): works without
+//    owning a domain, and reaches anyone's inbox.
+//  - Resend (RESEND_API_KEY + CONTACT_FROM_EMAIL): needs a verified domain to
+//    email anyone other than your own Resend account.
+// Gmail is used if its keys are set; otherwise Resend.
 async function sendEmails(data: Parameters<typeof acknowledgementEmail>[0], meta: { id: string; consentAt: string }) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
   const owner = process.env.CONTACT_OWNER_EMAIL;
-  if (!apiKey || !from || !owner) {
-    console.error(`[contact] Message ${meta.id} saved, but emails were not sent: RESEND_API_KEY, CONTACT_FROM_EMAIL or CONTACT_OWNER_EMAIL is missing.`);
+  const toOwner = ownerEmail(data, meta);
+  const toVisitor = acknowledgementEmail(data);
+  if (!owner) {
+    console.error(`[contact] Message ${meta.id} saved, but emails were not sent: CONTACT_OWNER_EMAIL is missing.`);
+    return;
+  }
+  const emails: [string, Email][] = [
+    ["owner notification", { to: owner, replyTo: data.email, ...toOwner }],
+    ["acknowledgement", { to: data.email, ...toVisitor }],
+  ];
+
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPassword = process.env.GMAIL_APP_PASSWORD;
+  const resendKey = process.env.RESEND_API_KEY;
+  const resendFrom = process.env.CONTACT_FROM_EMAIL;
+
+  let send: (email: Email) => Promise<void>;
+  if (gmailUser && gmailPassword) {
+    const nodemailer = (await import("nodemailer")).default;
+    const gmail = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user: gmailUser, pass: gmailPassword.replace(/\s+/g, "") },
+    });
+    // Gmail always sends from your own Gmail address; the name shows as Cherié.
+    send = async (email) => {
+      await gmail.sendMail({ from: { name: "Cherié", address: gmailUser }, ...email });
+    };
+  } else if (resendKey && resendFrom) {
+    const resend = new Resend(resendKey);
+    send = async (email) => {
+      const { error } = await resend.emails.send({ from: resendFrom, ...email });
+      if (error) throw new Error(error.message);
+    };
+  } else {
+    console.error(`[contact] Message ${meta.id} saved, but emails were not sent: set GMAIL_USER + GMAIL_APP_PASSWORD, or RESEND_API_KEY + CONTACT_FROM_EMAIL.`);
     return;
   }
 
-  const resend = new Resend(apiKey);
-  const toOwner = ownerEmail(data, meta);
-  const toVisitor = acknowledgementEmail(data);
-
-  const results = await Promise.allSettled([
-    resend.emails.send({ from, to: owner, replyTo: data.email, subject: toOwner.subject, html: toOwner.html, text: toOwner.text }),
-    resend.emails.send({ from, to: data.email, subject: toVisitor.subject, html: toVisitor.html, text: toVisitor.text }),
-  ]);
-
+  const results = await Promise.allSettled(emails.map(([, email]) => send(email)));
   results.forEach((result, i) => {
-    const which = i === 0 ? "owner notification" : "acknowledgement";
     if (result.status === "rejected") {
-      console.error(`[contact] Message ${meta.id} saved, but the ${which} email failed:`, result.reason instanceof Error ? result.reason.message : result.reason);
-    } else if (result.value.error) {
-      console.error(`[contact] Message ${meta.id} saved, but the ${which} email failed:`, result.value.error.message);
+      const reason = result.reason instanceof Error ? result.reason.message : String(result.reason);
+      console.error(`[contact] Message ${meta.id} saved, but the ${emails[i][0]} email failed:`, reason);
     }
   });
 }

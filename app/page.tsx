@@ -38,7 +38,7 @@ const PROMISES = [
     text: "The size finder works on your screen. We don't save your measurements.",
   },
   {
-    title: "Made for warm days",
+    title: "Easy to wear all day",
     text: "No wires, and fit tips on how the band and straps should sit, so it stays comfortable from morning to evening.",
   },
   {
@@ -71,7 +71,7 @@ const FAQS = [
   },
 ];
 
-const RIBBON = ["Soft", "Wire-free", "Sized with care", "Made for warm days", "S · M · L · XL", "₹1,499"];
+const RIBBON = ["Soft", "Wire-free", "Sized with care", "S · M · L · XL", "₹1,499"];
 
 // Positions for the sparkles that twinkle around the hero character.
 const HERO_SPARKLES = [
@@ -130,9 +130,6 @@ export default function Home() {
             <div className="badge char-pop" style={{ "--delay": "300ms" } as CSSProperties}>
               <HeroMonogram />
             </div>
-            <p className="script hero-script write-on" style={{ "--delay": "1100ms" } as CSSProperties}>
-              made for warm days
-            </p>
           </div>
         </div>
       </section>

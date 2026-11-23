@@ -11,7 +11,7 @@ export default function HeroMonogram() {
         <text className="monogram-ring-text">
           {/* textLength stretches the words to fill the whole circle evenly */}
           <textPath href="#monogram-ring" startOffset="0" textLength="930" lengthAdjust="spacing">
-            Soft · Wire-free · Sized with care · Made for warm days ·
+            Soft · Wire-free · Sized with care · S · M · L · XL ·
           </textPath>
         </text>
       </g>
