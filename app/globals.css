@@ -486,9 +486,50 @@ button:focus-visible {
   opacity: 0.6;
 }
 
-.badge .character {
-  width: 72%;
-  height: auto;
+/* The hero monogram: a big italic "C" with a slowly turning ring of words. */
+.monogram {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.monogram-ring {
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+  animation: ring-turn 60s linear infinite;
+}
+
+.monogram-ring-text {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  fill: var(--cherry);
+}
+
+.monogram-c {
+  font-family: var(--font-heading), Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 200px;
+  fill: var(--cherry);
+  animation: blur-in 1400ms ease-out 400ms both;
+}
+
+.monogram-name {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.4em;
+  fill: var(--rose);
+  animation: blur-in 1200ms ease-out 900ms both;
+}
+
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes float {

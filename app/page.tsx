@@ -10,6 +10,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import BraletteSketch from "../components/BraletteSketch";
 import CherieCharacter, { Sparkle } from "../components/CherieCharacter";
+import HeroMonogram from "../components/HeroMonogram";
 import { SIZE_CHART } from "../data/size-chart";
 
 const STEPS = [
@@ -127,7 +128,7 @@ export default function Home() {
               />
             ))}
             <div className="badge char-pop" style={{ "--delay": "300ms" } as CSSProperties}>
-              <CherieCharacter mood="happy" size={290} label="The Cherié cherries, two cherries in a tiny pink bra" />
+              <HeroMonogram />
             </div>
             <p className="script hero-script write-on" style={{ "--delay": "1100ms" } as CSSProperties}>
               made for warm days
