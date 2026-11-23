@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Cormorant_Garamond, Jost, Sacramento } from "next/font/google";
+import CherieCharacter from "../components/CherieCharacter";
+import Motion from "../components/Motion";
 import "./globals.css";
 
 const heading = Cormorant_Garamond({
@@ -10,6 +12,8 @@ const heading = Cormorant_Garamond({
   variable: "--font-heading",
 });
 const body = Jost({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-body" });
+// The handwritten script from the Cherié pitch deck, for small accents.
+const script = Sacramento({ subsets: ["latin"], weight: "400", variable: "--font-script" });
 
 export const metadata: Metadata = {
   title: { default: "Cherié · The soft wire-free bralette", template: "%s · Cherié" },
@@ -18,8 +22,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable}`}>
+    <html lang="en" className={`${heading.variable} ${body.variable} ${script.variable}`}>
       <body>
+        <Motion />
         <header className="site-header">
           <div className="wrap header-inner">
             <Link href="/" className="wordmark">
@@ -35,6 +40,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/#faq" className="nav-link">
                 FAQ
               </Link>
+              <Link href="/contact" className="nav-link">
+                Contact
+              </Link>
               <Link href="/size-finder" className="primary btn-small">
                 Find your size
               </Link>
@@ -46,17 +54,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <footer className="site-footer">
           <div className="wrap footer-inner">
-            <div>
-              <Link href="/" className="wordmark">
-                Cherié
-              </Link>
-              <p className="footer-line">Soft, wire-free lingerie for warm days, sized with care.</p>
+            <div className="footer-brand">
+              <CherieCharacter size={56} disc className="footer-character" />
+              <div>
+                <Link href="/" className="wordmark">
+                  Cherié
+                </Link>
+                <p className="footer-line">Soft, wire-free lingerie for warm days, sized with care.</p>
+              </div>
             </div>
             <nav className="footer-nav" aria-label="Footer">
               <Link href="/#bralette">The bralette</Link>
               <Link href="/size-finder">Find your size</Link>
               <Link href="/#promise">Our promise</Link>
               <Link href="/#faq">FAQ</Link>
+              <Link href="/contact">Contact</Link>
+              <Link href="/privacy">Privacy</Link>
             </nav>
           </div>
           <p className="wrap footer-small">© 2026 Cherié</p>

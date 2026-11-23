@@ -9,6 +9,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import type { Range } from "../data/size-chart";
 import { standardNote, type Note } from "../lib/copy-guard";
+import CherieCharacter from "./CherieCharacter";
 import { findSize, type Answer, type FitInput, type SizeResult, type Unit } from "../lib/sizing";
 
 type NoteState =
@@ -173,14 +174,26 @@ export default function SizeFinder() {
 
       {result && !result.ok && (
         <section className="card message fade" role="alert" key={`problem-${attempt}`}>
-          <p>{result.message}</p>
+          <div className="message-row">
+            <CherieCharacter mood="sorry" size={76} className="finder-character char-pop" />
+            <p>{result.message}</p>
+          </div>
         </section>
       )}
 
       {result && result.ok && (
         <section className="card fade" aria-live="polite" key={`result-${attempt}`}>
-          <span className="label">Your Cherié size</span>
-          <h2 className="size">{result.size}</h2>
+          <div className="size-row">
+            <div>
+              <span className="label">Your Cherié size</span>
+              <h2 className="size">{result.size}</h2>
+            </div>
+            <CherieCharacter
+              mood={note?.kind === "waiting" ? "thinking" : "happy"}
+              size={110}
+              className="finder-character char-pop"
+            />
+          </div>
 
           <span className="label">Based on this row of the Cherié size chart</span>
           <table className="chart-row">

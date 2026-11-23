@@ -6,6 +6,7 @@
   --cherry-deep: #460501; /* logo: the deep corners */
   --logo-cream: #eedcc8; /* logo: the lettering */
   --gold: #caa392; /* logo: the thin frame line */
+  --blush: #e8b7c2; /* pitch deck: the pink script and the bra */
   --cream: #efeae3; /* light fields inside cards */
   --paper: #f7f2ec; /* cards */
   --beige: #e6d5bd; /* thin frames inside cards */
@@ -307,9 +308,556 @@ button:focus-visible {
   }
 }
 
+/* ---------- Motion, the character and design accents ---------- */
+
+/* Scroll reveal: items marked .reveal rise in as they come into view.
+   Stagger with style={{ "--i": n }}. Without JavaScript they just show. */
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 900ms ease, transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 120ms);
+}
+
+.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* The deck's "drape": a card swings down into place. */
+.motion-ready .reveal.drape {
+  transform: translateY(-36px) rotate(-4deg);
+  transform-origin: top center;
+}
+
+.motion-ready .reveal.drape.is-visible {
+  transform: none;
+}
+
+/* Headline lines arrive softly, out of a blur, one after another. */
+.blur-in {
+  animation: blur-in 1100ms ease-out both;
+  animation-delay: calc(var(--i, 0) * 160ms);
+}
+
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+/* Handwritten script from the deck, written on from left to right. */
+.script {
+  font-family: var(--font-script), "Brush Script MT", cursive;
+  font-weight: 400;
+  color: var(--blush);
+  line-height: 1;
+}
+
+.write-on {
+  animation: write-on 1800ms cubic-bezier(0.5, 0, 0.2, 1) both;
+  animation-delay: var(--delay, 600ms);
+}
+
+@keyframes write-on {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The character: swings gently from its stems and blinks now and then. */
+.character {
+  display: block;
+  overflow: visible;
+}
+
+.char-swing {
+  transform-box: view-box;
+  transform-origin: 100px 20px;
+  animation: sway 5s ease-in-out infinite;
+}
+
+.char-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5.5s ease-in-out infinite;
+}
+
+.char-twin .char-eyes {
+  animation-delay: 0.12s;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* A little hop when the character first appears. */
+.char-pop {
+  animation: char-pop 900ms cubic-bezier(0.3, 1.5, 0.5, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes char-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Gold sparkles that twinkle, like the ones on the logo. */
+.sparkle {
+  position: absolute;
+  animation: twinkle 3.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(20deg);
+  }
+}
+
+/* Hero: the character in a cream badge, like the Cherié icon, floating. */
+.hero-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  position: relative;
+  width: min(400px, 78vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--logo-cream);
+  box-shadow: 0 0 0 1px var(--gold), 0 30px 80px rgba(20, 0, 0, 0.45), 0 0 120px rgba(232, 183, 194, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 7s ease-in-out infinite;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--cherry);
+  opacity: 0.6;
+}
+
+.badge .character {
+  width: 72%;
+  height: auto;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero-script {
+  font-size: clamp(44px, 6vw, 64px);
+  margin: 6px 0 0;
+}
+
+/* A slow ribbon of words between sections. */
+.ribbon {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--cherry-deep);
+  padding: 16px 0;
+}
+
+.ribbon-track {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  width: max-content;
+  animation: ribbon 45s linear infinite;
+}
+
+.ribbon-word {
+  font-family: var(--font-heading), Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--logo-cream);
+  white-space: nowrap;
+}
+
+.ribbon-track .sparkle {
+  position: static;
+  flex: none;
+}
+
+@keyframes ribbon {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* The arch-shaped product card from the deck's collection slide. */
+.arch {
+  background: var(--paper);
+  border-radius: 240px 240px 24px 24px;
+  padding: 48px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  color: var(--ink);
+  --heading: var(--cherry);
+  --text: var(--ink);
+  --text-soft: var(--ink-soft);
+  --label: var(--rose);
+}
+
+.arch-art {
+  width: min(260px, 70%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f4d6dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.arch-art .sketch {
+  width: 86%;
+}
+
+.arch .script {
+  color: var(--rose);
+  font-size: 40px;
+}
+
+.arch .price {
+  color: var(--cherry);
+}
+
+.arch .size-pill {
+  color: var(--cherry);
+  border-color: var(--beige);
+  background: var(--cream);
+}
+
+.arch .size-pills {
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+
+.arch h2 {
+  font-size: clamp(30px, 4vw, 40px);
+  margin-bottom: 4px;
+}
+
+.arch .primary {
+  color: var(--paper);
+  background: var(--cherry);
+}
+
+.promise-script {
+  font-size: clamp(40px, 5vw, 56px);
+  margin: 0 0 8px;
+}
+
+/* The first-drop box gets the character and its sparkles. */
+.drop-character {
+  position: relative;
+  width: 150px;
+  margin: 0 auto 20px;
+}
+
+.drop-character .sparkle:nth-of-type(1) {
+  left: -26px;
+  top: 12px;
+}
+
+.drop-character .sparkle:nth-of-type(2) {
+  right: -22px;
+  top: -6px;
+}
+
+.drop-character .sparkle:nth-of-type(3) {
+  right: -34px;
+  bottom: 18px;
+}
+
+/* Footer character. */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Buttons lift a touch on hover. */
+a.primary,
+a.secondary,
+button.primary {
+  transition: transform 200ms ease, opacity 200ms ease, background 200ms ease;
+}
+
+a.primary:hover,
+a.secondary:hover,
+button.primary:hover {
+  transform: translateY(-2px);
+}
+
+/* The character in the size finder. */
+.finder-character {
+  flex: none;
+}
+
+.size-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.message-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.waiting-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Contact form and privacy page ---------- */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.optional {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+}
+
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--beige);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+.consent input:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+[aria-invalid="true"] {
+  border-color: var(--cherry) !important;
+}
+
+.field-error {
+  color: var(--cherry);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.counter {
+  align-self: flex-end;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.consent input {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  flex: none;
+  accent-color: var(--cherry);
+}
+
+.consent a {
+  color: var(--cherry);
+}
+
+/* The honeypot: kept off-screen, so people never see or tab to it. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-failure {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--cream);
+  border: 1px solid var(--cherry);
+  border-radius: 4px;
+}
+
+.form-failure p {
+  margin: 0;
+  color: var(--cherry);
+  font-weight: 500;
+}
+
+button.primary:disabled {
+  opacity: 0.75;
+  cursor: wait;
+  transform: none;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  border: 2px solid rgba(247, 242, 236, 0.4);
+  border-top-color: var(--paper);
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contact-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.contact-done p {
+  margin: 0 0 8px;
+}
+
+.secondary-light {
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--cherry);
+  background: transparent;
+  border: 1px solid var(--cherry);
+  border-radius: 4px;
+  padding: 12px 18px;
+  cursor: pointer;
+}
+
+.prose .card p {
+  margin: 0 0 12px;
+}
+
+.prose .card p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-h {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.prose .card a {
+  color: var(--cherry);
+}
+
+/* Anyone who asks their device for less motion gets none of it. */
 @media (prefers-reduced-motion: reduce) {
-  .fade {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .motion-ready .reveal {
+    opacity: 1;
+    transform: none;
   }
 }
 
